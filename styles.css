@@ -25,6 +25,9 @@
 }
 
 .screen {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     background-color: black;
     border-radius: 10px;
     width: 100%;
@@ -65,6 +68,11 @@
 .btn-icon {
     font-size: 20px;
     font-weight: bold;
+}
+
+.zero {
+    color: white;
+    font-size: 30px;
 }
 
 
