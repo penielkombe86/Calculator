@@ -8,6 +8,7 @@ let screenValue = document.querySelector(".screen-value")
 let firstNumber = ""
 let  operator = ""
 let  secondNumber = ""
+let display = ""
 
 screenValue.textContent = 0
 
@@ -58,10 +59,12 @@ function handleNumberInput(value) {
     if (!isNaN(value) || value === ".") { // check if the value clicked is a number or has decimal places 
         if (!operator) { // check if the operator is empty
             firstNumber += value
-            screenValue.textContent = firstNumber
+            display += value
+            screenValue.textContent = display
         } else {
             secondNumber += value
-            screenValue.textContent = secondNumber
+            display += value
+            screenValue.textContent = display
         }
     }
 }
@@ -70,7 +73,8 @@ function handleOperatorInput(value) {
     if (!operator) { // check if the operator is empty
         if (value === "x" || value === "-" || value === "÷" || value === "+") {
             operator = value
-            screenValue.textContent = operator
+            display += value
+            screenValue.textContent = display
         }
     }  
 }
@@ -95,11 +99,29 @@ function operation() {
     }
     screenValue.textContent = result
 }
+function backspace() {
+    if (display === "" || display === 0) return 
+    
+    display = display.slice(0, -1)
+    screenValue.textContent = display // immediately update the screen when user clicks the backspace
+
+    // update the firstNumber, secondNumber and operator
+    if (operator !== "") { // check if operator is present
+        secondNumber = secondNumber.slice(0, -1)
+    }
+    else if (operator !== "" && secondNumber === "") { // check if operator is present and secondNumber is empty
+        operator = ""
+    }
+    else {
+        firstNumber = firstNumber.slice(0, -1)
+    }
+} 
 
 function resetCalculator() {
     firstNumber = ""
     secondNumber = ""
     operator = ""
+    display = ""
     screenValue.textContent = "0"
 
 }
@@ -113,6 +135,10 @@ function updateDisplay(event) {
 
     handleNumberInput(value)
     handleOperatorInput(value)
+
+    if (value === "⌫") {
+        backspace()
+    }
     
     if (value === "=") {
         operation()
