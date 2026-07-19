@@ -97,7 +97,14 @@ function operation() {
                 break
         }
     }
-    screenValue.textContent = result
+    display = result
+    screenValue.textContent = display
+    // reset the variable after the result is displayed
+    firstNumber = result?.toString() // used optional chaining to prevent crashing when empty values are encountered
+    operator = ""
+    secondNumber = ""
+    display = firstNumber
+    screenValue.textContent = display
 }
 function backspace() {
     if (display === "" || display === 0) return 
@@ -126,6 +133,20 @@ function resetCalculator() {
 
 }
 
+function handlePercentages(value) {
+    // validations
+    if (!operator) {
+        firstNumber = firstNumber / 100
+        display += value
+        screenValue.textContent = display
+    }
+    else {
+        secondNumber = secondNumber / 100
+        display += value
+        screenValue.textContent = display
+    }
+}
+
 function updateDisplay(event) {
     const clickedButton = event.target.closest("button")
 
@@ -136,15 +157,19 @@ function updateDisplay(event) {
     handleNumberInput(value)
     handleOperatorInput(value)
 
-    if (value === "⌫") {
-        backspace()
-    }
-    
-    if (value === "=") {
-        operation()
-    }
-    if (value === "C") {
-        resetCalculator()
+    switch (value) {
+        case "C":
+            resetCalculator()
+            break
+        case "⌫":
+            backspace()
+            break
+        case "=":
+            operation()
+            break
+        case "%":
+            handlePercentages(value)
+            break
     }
 }
 
