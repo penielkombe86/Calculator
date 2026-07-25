@@ -1,7 +1,3 @@
-// logic behind updating the screen:
-// - keep track of the first No and second No and operator
-// - 
-
 const buttonContainer = document.querySelector(".button-container")
 let screenValue = document.querySelector(".screen-value")
 
@@ -66,7 +62,7 @@ function render() {
     screenValue.textContent = display 
 }
 
-function handleNegativeNumbers(value) {
+function handleNegativeNumbers() {
     // create new negative numbers when the user click the minus symbol
     if (!state.firstNumber) { 
         state.firstNumber = "-" // start a new negative number
@@ -101,18 +97,27 @@ function handleOperatorInput(value){
 function operation() {
     let result 
     if (state.firstNumber && state.operator && state.secondNumber) {
+        let firstNumber = parseFloat(state.firstNumber)
+        let secondNumber = parseFloat(state.secondNumber)
+
+        if (state.firstNumber.includes("%")) {
+            firstNumber = firstNumber / 100
+        }
+        if (state.secondNumber.includes("%")) {
+            secondNumber = secondNumber / 100
+        }
         switch (state.operator) {
             case "x" :
-                result = Number(state.firstNumber) * Number(state.secondNumber)
+                result = firstNumber * secondNumber
                 break
             case "+":
-                result = Number(state.firstNumber) + Number(state.secondNumber)
+                result = firstNumber + secondNumber
                 break
             case "-":
-                result = Number(state.firstNumber) - Number(state.secondNumber)
+                result = firstNumber - secondNumber
                 break
             case "÷":
-                result = Number(state.firstNumber) / Number(state.secondNumber)
+                result = firstNumber / secondNumber
                 break
         }
     }
@@ -139,8 +144,8 @@ function resetCalculator() { // clears the states
     render()
 }
 
-function handlePercentages(value) { // converts numbers to percentages
-    // know what number we are dealing with
+function handlePercentages() {
+    // add percentage symbol to the firstNumber and secondNumber state
     if (!state.operator) {
         state.firstNumber += "%"
     }
@@ -187,6 +192,8 @@ function updateDisplay(event) {
                     state.secondNumber = ""
                 }
                 break
+            case "%":
+                handlePercentages(value)
         }
     }
 }
