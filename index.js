@@ -155,6 +155,19 @@ function handlePercentages() {
     render()
 }
 
+function signChange() {
+    if (state.firstNumber.includes("%") || state.secondNumber.includes("%")) {
+    }
+    if (!state.operator) {
+        state.firstNumber = (state.firstNumber * -1).toString()
+    }
+    else {
+        state.secondNumber = (state.secondNumber * -1).toString()
+    }
+    render()
+    console.table(state)
+}
+
 function updateDisplay(event) {
     const clickedButton = event.target.closest("button")
 
@@ -194,6 +207,9 @@ function updateDisplay(event) {
                 break
             case "%":
                 handlePercentages(value)
+                break
+            case "+/-":
+                signChange()
         }
     }
 }
